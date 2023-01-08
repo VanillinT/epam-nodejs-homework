@@ -7,10 +7,20 @@ const codes = {
   reset: '\x1b[0m',
 };
 
-export const [logSuccess, logError, logInfo] = [
+const colorCodes = [
   codes.bgGreen + codes.fgBlack,
   codes.bgRed + codes.fgWhite,
   codes.bgBlue + codes.fgWhite,
-].map((colorCode) => (message: string) => {
-  console.log(colorCode, message, codes.reset);
-});
+];
+
+export const [getGreenText, getRedText, getBlueText] = colorCodes.map(
+  (colorCode) => (message: string) => colorCode + message + codes.reset,
+);
+
+export const [logSuccess, logError, logInfo] = [
+  getGreenText,
+  getRedText,
+  getBlueText,
+].map(
+  (getColoredText) => (message: string) => console.log(getColoredText(message)),
+);
